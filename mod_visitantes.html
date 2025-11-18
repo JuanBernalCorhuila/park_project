@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <title>Visitantes & Ventas — Park Amusement</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pa-bg">
+
+<header class="pa-header small">
+  <a class="back" href="index.html">← Inicio</a>
+  <h1>🧑‍🤝‍🧑 Módulo Visitantes & Ventas</h1>
+</header>
+
+<main class="container card">
+  <p class="muted">Ruta actual: /park_project/visitantes</p>
+
+  <!-- Descripción del módulo -->
+  <p class="lead">
+    En este módulo se registran los visitantes del parque, sus tickets y las ventas de productos.
+    Permite seguir historiales de compra y controlar transacciones mediante detalles de compra.
+  </p>
+
+  <h2>Entidades del Módulo</h2>
+
+  <div class="table-box">
+    <table>
+      <tr><th>Entidad</th><th>Atributos</th></tr>
+
+      <tr>
+        <td><a href="entity_visitor.html">🧍 visitor</a></td>
+        <td>id, first_name, last_name, document_type, document_number, email, phone, age</td>
+      </tr>
+
+      <tr>
+        <td><a href="entity_ticket.html">🎟 ticket</a></td>
+        <td>id, visitor_id, purchase_date, ticket_type, price, valid_until</td>
+      </tr>
+
+      <tr>
+        <td><a href="entity_product.html">🛍 product</a></td>
+        <td>id, name, price, stock, category</td>
+      </tr>
+
+      <tr>
+        <td><a href="entity_purchase.html">💳 purchase</a></td>
+        <td>id, visitor_id, purchase_date, total_amount</td>
+      </tr>
+
+      <!-- PURCHASE DETAIL (AGREGADO) -->
+      <tr>
+        <td><a href="entity_purchase_detail.html">🧾 purchase_detail</a></td>
+        <td>id, purchase_id, product_id, quantity, unit_price</td>
+      </tr>
+
+    </table>
+  </div>
+
+</main>
+
+</body>
+</html>

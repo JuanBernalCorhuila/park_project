@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <title>Park Amusement — Inicio 🎡</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pa-bg">
+  <header class="pa-header">
+    <div class="menu-left">
+      <button id="menuBtn" class="icon-btn">☰</button>
+    </div>
+    <h1 class="pa-title">🎡 Park Amusement</h1>
+  </header>
+
+  <nav id="dropdown" class="pa-dropdown">
+    <a href="functions.html">🧮 Functions</a>
+    <a href="procedures.html">🔧 Procedures</a>
+    <a href="joins.html">🔗 Joins</a>
+    <a href="inserts.html">📥 Inserts</a>
+    <a href="triggers.html">⚡ Triggers</a>
+  </nav>
+
+  <main class="container">
+    <section class="intro card">
+      <h2>Bienvenido</h2>
+      <p>Documentación del sistema Park Amusement.</p>
+      <p class="muted">Ruta actual: /park_project</p>
+    </section>
+
+    <section class="modules-grid">
+      <a class="module-card" href="mod_seguridad.html">
+        <div class="module-emoji">🛡️</div><h3>Seguridad</h3><p class="muted">8 entidades</p>
+      </a>
+      <a class="module-card" href="mod_zonas.html">
+        <div class="module-emoji">🗺️</div><h3>Zonas</h3><p class="muted">1 entidad</p>
+      </a>
+      <a class="module-card" href="mod_atracciones.html">
+        <div class="module-emoji">🎠</div><h3>Atracciones</h3><p class="muted">3 entidades</p>
+      </a>
+      <a class="module-card" href="mod_empleados.html">
+        <div class="module-emoji">🧑‍🔧</div><h3>Empleados</h3><p class="muted">1 entidad</p>
+      </a>
+      <a class="module-card" href="mod_visitantes.html">
+        <div class="module-emoji">🧑‍🤝‍🧑</div><h3>Visitantes & Ventas</h3><p class="muted">5 entidades</p>
+      </a>
+    </section>
+  </main>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const dropdown = document.getElementById('dropdown');
+    menuBtn.addEventListener('click', ()=> dropdown.classList.toggle('open'));
+    document.addEventListener('click', e=>{ if(!menuBtn.contains(e.target) && !dropdown.contains(e.target)) dropdown.classList.remove('open');});
+  </script>
+</body>
+</html>
