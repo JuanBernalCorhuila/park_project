@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"/><title>Atracciones — Park Amusement</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body class="pa-bg">
+<header class="pa-header small">
+  <a class="back" href="index.html">← Inicio</a>
+  <h1>🎠 Módulo Atracciones</h1>
+</header>
+
+<main class="container card">
+  <p class="muted">Ruta actual: /park_project/atracciones</p>
+
+  <!-- Descripción del módulo -->
+  <p class="lead">En Atracciones gestionamos las atracciones del parque: su nombre, zona, capacidad, requisitos (como altura mínima) y su estado (activa/inactiva). También se registran accesos y mantenimientos relacionados.</p>
+
+  <h2>Entidades del Módulo</h2>
+  <div class="table-box">
+    <table>
+      <tr><th>Entidad</th><th>Atributos</th></tr>
+      <tr><td><a href="entity_attraction.html">🎡 attraction</a></td>
+          <td>id, zone_id, name, description, min_height, max_capacity, status</td></tr>
+      <tr><td><a href="entity_ticket_attraction.html">🎫 ticket_attraction</a></td>
+          <td>id, ticket_id, attraction_id, access_time</td></tr>
+      <tr><td><a href="entity_maintenance.html">🛠 maintenance</a></td>
+          <td>id, attraction_id, employee_id, maintenance_date, description, status</td></tr>
+    </table>
+  </div>
+</main>
+</body>
+</html>

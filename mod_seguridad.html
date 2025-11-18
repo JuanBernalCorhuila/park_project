@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"/><title>Seguridad — Park Amusement</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body class="pa-bg">
+<header class="pa-header small">
+  <a class="back" href="index.html">← Inicio</a>
+  <h1>🛡️ Módulo Seguridad</h1>
+</header>
+
+<main class="container card">
+  <p class="muted">Ruta actual: /park_project/seguridad</p>
+
+  <!-- Descripción del módulo -->
+  <p class="lead">En el módulo de Seguridad se administra todo lo relacionado con la identidad y el acceso: personas, cuentas de usuario, roles y permisos. Aquí se controlan quién puede ver o editar cada parte del sistema y se registran las relaciones entre usuarios, roles y módulos.</p>
+
+  <h2>Entidades del Módulo</h2>
+  <div class="table-box">
+    <table>
+      <tr><th>Entidad</th><th>Atributos</th></tr>
+      <tr><td><a href="entity_person.html">🧑 person</a></td>
+          <td>id, document_type, document_number, first_name, last_name, phone, email, address</td></tr>
+      <tr><td><a href="entity_user_account.html">👤 user_account</a></td>
+          <td>id, person_id, username, password_hash, status</td></tr>
+      <tr><td><a href="entity_role.html">🎭 role</a></td>
+          <td>id, name, description</td></tr>
+      <tr><td><a href="entity_user_role.html">🔁 user_role</a></td>
+          <td>id, user_account_id, role_id</td></tr>
+      <tr><td><a href="entity_module.html">📦 module</a></td>
+          <td>id, name, description</td></tr>
+      <tr><td><a href="entity_module_role.html">🔐 module_role</a></td>
+          <td>id, module_id, role_id</td></tr>
+      <tr><td><a href="entity_view.html">🔎 view</a></td>
+          <td>id, name, description</td></tr>
+      <tr><td><a href="entity_view_module.html">🧭 view_module</a></td>
+          <td>id, view_id, module_id</td></tr>
+    </table>
+  </div>
+</main>
+</body>
+</html>

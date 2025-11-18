@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Triggers — Park Amusement</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="pa-bg">
+
+<header class="pa-header small">
+    <a class="back" href="index.html">← Inicio</a>
+    <h1>⚡ Trigger del Sistema</h1>
+</header>
+
+<main class="container card">
+
+    <p class="muted">Ruta actual: /park_project/triggers</p>
+
+    <p class="lead">
+        En este apartado se encuentra el trigger configurado en la base de datos.
+        Los triggers permiten ejecutar acciones automáticas en respuesta a eventos,
+        como actualizaciones, inserciones o eliminaciones.
+    </p>
+
+    <hr>
+
+    <!-- TRIGGER ÚNICO -->
+    <h2>⚡ tr_complete_maintenance</h2>
+    <p>
+        Este trigger se ejecuta automáticamente cuando se actualiza un mantenimiento.
+        Si el estado del mantenimiento cambia a <b>"completed"</b>, el sistema reactiva
+        la atracción asociada cambiando su estado nuevamente a activo.
+    </p>
+
+    <h3>Código</h3>
+
+    <div class="code-box">
+        DELIMITER $$
+
+        CREATE TRIGGER tr_complete_maintenance
+        AFTER UPDATE ON maintenance
+        FOR EACH ROW
+        BEGIN
+            IF NEW.status = 'completed' THEN
+                UPDATE attraction
+                SET status = TRUE
+                WHERE id = NEW.attraction_id;
+            END IF;
+        END $$
+
+        DELIMITER ;
+    </div>
+
+</main>
+
+</body>
+</html>

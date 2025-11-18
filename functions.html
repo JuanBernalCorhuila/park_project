@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <title>Funciones — Park Amusement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="pa-bg">
+
+<header class="pa-header small">
+  <a class="back" href="index.html">← Inicio</a>
+  <h1>🧮 Funciones del Sistema</h1>
+</header>
+
+<main class="container card">
+
+  <p class="muted">Ruta actual: /park_project/functions</p>
+
+  <p class="lead">
+    En este apartado se listan todas las funciones creadas dentro de la base de datos.
+    Las funciones permiten realizar cálculos automáticos y obtener valores derivados sin necesidad
+    de escribir consultas complejas repetidamente.
+  </p>
+
+  <hr>
+
+  <!-- FUNCIÓN 1 -->
+  <h2>💰 fn_total_gastado_visitante</h2>
+  <p>
+    Esta función calcula cuánto dinero ha gastado un visitante sumando:  
+    ✔ El total de compras realizadas  
+    ✔ El total pagado por tickets  
+  </p>
+
+  <h3>Código</h3>
+  <div class="code-box">
+    DELIMITER $$
+
+    CREATE FUNCTION fn_total_gastado_visitante(p_visitor_id INT)
+    RETURNS DECIMAL(10,2)
+    DETERMINISTIC
+    BEGIN
+        DECLARE total_compras DECIMAL(10,2);
+        DECLARE total_tickets DECIMAL(10,2);
+        DECLARE total DECIMAL(10,2);
+
+        SELECT IFNULL(SUM(total_amount), 0)
+        INTO total_compras
+        FROM purchase
+        WHERE visitor_id = p_visitor_id;
+
+        SELECT IFNULL(SUM(price), 0)
+        INTO total_tickets
+        FROM ticket
+        WHERE visitor_id = p_visitor_id;
+
+        SET total = total_compras + total_tickets;
+        RETURN total;
+    END $$
+
+    DELIMITER ;
+  </div>
+
+  <hr>
+
+  <!-- FUNCIÓN 2 -->
+  <h2>🏟 fn_aforo_disponible_zona</h2>
+  <p>
+    Calcula el aforo disponible de una zona restando:  
+    ✔ Capacidad total de la zona  
+    ✔ Suma de capacidades de sus atracciones  
+  </p>
+
+  <h3>Código</h3>
+  <div class="code-box">
+    DELIMITER $$
+
+    CREATE FUNCTION fn_aforo_disponible_zona(p_zone_id INT)
+    RETURNS INT
+    DETERMINISTIC
+    BEGIN
+        DECLARE capacidad_zona INT;
+        DECLARE capacidad_atracciones INT;
+
+        SELECT capacity
+        INTO capacidad_zona
+        FROM zone
+        WHERE id = p_zone_id;
+
+        SELECT IFNULL(SUM(max_capacity), 0)
+        INTO capacidad_atracciones
+        FROM attraction
+        WHERE zone_id = p_zone_id;
+
+        RETURN capacidad_zona - capacidad_atracciones;
+    END $$
+
+    DELIMITER ;
+  </div>
+
+</main>
+
+</body>
+</html>

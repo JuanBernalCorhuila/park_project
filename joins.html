@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Joins — Park Amusement</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="pa-bg">
+
+<header class="pa-header small">
+    <a class="back" href="index.html">← Inicio</a>
+    <h1>🔗 Consultas JOIN del Sistema</h1>
+</header>
+
+<main class="container card">
+
+    <p class="muted">Ruta actual: /park_project/joins</p>
+
+    <p class="lead">
+        En este apartado se listan las consultas JOIN utilizadas dentro del sistema.
+        Cada consulta combina información de múltiples tablas para generar reportes
+        más completos y útiles.
+    </p>
+
+    <hr>
+
+    <!-- JOIN 1 -->
+    <h2>1️⃣ Visitantes, tickets, atracciones, zonas y empleado encargado</h2>
+    <p>
+        Esta consulta muestra los visitantes con sus tickets, las atracciones visitadas,
+        la zona a la que pertenecen y el empleado asignado.
+    </p>
+
+    <div class="code-box">
+        SELECT v.first_name, v.last_name, t.id AS ticket_id,
+               a.name AS attraction, z.name AS zone,
+               e.first_name AS employee, e.role AS employee_role,
+               ta.access_time
+        FROM visitor v
+        INNER JOIN ticket t ON v.id = t.visitor_id
+        INNER JOIN ticket_attraction ta ON t.id = ta.ticket_id
+        INNER JOIN attraction a ON ta.attraction_id = a.id
+        INNER JOIN zone z ON a.zone_id = z.id
+        INNER JOIN employee e ON a.id = e.attraction_id;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 2 -->
+    <h2>2️⃣ Compras con productos, tickets y atracciones visitadas</h2>
+    <p>
+        Muestra un reporte completo del visitante, sus compras y los productos adquiridos,
+        junto con los tickets y atracciones.
+    </p>
+
+    <div class="code-box">
+        SELECT v.first_name, v.last_name, p.id AS purchase_id,
+               prd.name AS product, pd.quantity,
+               t.id AS ticket_id, a.name AS attraction
+        FROM visitor v
+        INNER JOIN purchase p ON v.id = p.visitor_id
+        INNER JOIN purchase_detail pd ON p.id = pd.purchase_id
+        INNER JOIN product prd ON pd.product_id = prd.id
+        INNER JOIN ticket t ON v.id = t.visitor_id
+        INNER JOIN ticket_attraction ta ON t.id = ta.ticket_id
+        INNER JOIN attraction a ON ta.attraction_id = a.id;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 3 -->
+    <h2>3️⃣ Personal, atracciones y mantenimientos</h2>
+    <p>
+        Lista cada atracción, su zona, el personal encargado y los mantenimientos asociados.
+    </p>
+
+    <div class="code-box">
+        SELECT a.name AS attraction, z.name AS zone,
+               e.first_name AS employee, e.role AS employee_role,
+               m.maintenance_date, m.status AS maintenance_status
+        FROM attraction a
+        INNER JOIN zone z ON a.zone_id = z.id
+        INNER JOIN employee e ON a.id = e.attraction_id
+        LEFT JOIN maintenance m ON a.id = m.attraction_id AND e.id = m.employee_id;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 4 -->
+    <h2>4️⃣ Usuarios del sistema, roles, módulos y vistas</h2>
+    <p>
+        Consulta que muestra la relación entre personas, cuentas, roles, módulos y vistas asignadas.
+    </p>
+
+    <div class="code-box">
+        SELECT p.first_name, p.last_name, ua.username,
+               r.name AS role_name, m.name AS module,
+               v.name AS view_name
+        FROM person p
+        INNER JOIN user_account ua ON p.id = ua.person_id
+        INNER JOIN user_role ur ON ua.id = ur.user_account_id
+        INNER JOIN role r ON ur.role_id = r.id
+        INNER JOIN module_role mr ON r.id = mr.role_id
+        INNER JOIN module m ON mr.module_id = m.id
+        INNER JOIN view_module vm ON m.id = vm.module_id
+        INNER JOIN view v ON vm.view_id = v.id;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 5 -->
+    <h2>5️⃣ Zonas, atracciones, empleados y mantenimientos</h2>
+    <p>
+        Muestra cada zona con sus atracciones, empleados asignados y mantenimientos asociados.
+    </p>
+
+    <div class="code-box">
+        SELECT z.name AS zone, a.name AS attraction,
+               e.first_name AS employee, e.role,
+               m.maintenance_date, m.status
+        FROM zone z
+        INNER JOIN attraction a ON z.id = a.zone_id
+        INNER JOIN employee e ON a.id = e.attraction_id
+        LEFT JOIN maintenance m ON a.id = m.attraction_id;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 6 -->
+    <h2>6️⃣ Reporte completo de visitantes</h2>
+    <p>Combina visitantes, tickets, atracciones visitadas, compras y productos.</p>
+
+    <div class="code-box">
+        SELECT v.first_name, v.last_name,
+               t.id AS ticket_id, a.name AS attraction,
+               p.id AS purchase_id, prd.name AS product
+        FROM visitor v
+        LEFT JOIN ticket t ON v.id = t.visitor_id
+        LEFT JOIN ticket_attraction ta ON t.id = ta.ticket_id
+        LEFT JOIN attraction a ON ta.attraction_id = a.id
+        LEFT JOIN purchase p ON v.id = p.visitor_id
+        LEFT JOIN purchase_detail pd ON p.id = pd.purchase_id
+        LEFT JOIN product prd ON pd.product_id = prd.id;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 7 -->
+    <h2>7️⃣ Ranking de atracciones por uso</h2>
+    <p>Cuenta las veces que cada atracción ha sido utilizada.</p>
+
+    <div class="code-box">
+        SELECT a.name AS attraction, z.name AS zone,
+               COUNT(ta.id) AS total_uses,
+               e.first_name AS employee,
+               m.status AS maintenance_status
+        FROM attraction a
+        INNER JOIN zone z ON a.zone_id = z.id
+        INNER JOIN ticket_attraction ta ON a.id = ta.attraction_id
+        INNER JOIN employee e ON a.id = e.attraction_id
+        LEFT JOIN maintenance m ON a.id = m.attraction_id
+        GROUP BY a.name, z.name, e.first_name, m.status;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 8 -->
+    <h2>8️⃣ Historial de un empleado</h2>
+    <p>Muestra el historial completo de zonas, atracciones, mantenimientos y visitantes atendidos.</p>
+
+    <div class="code-box">
+        SELECT e.first_name AS employee, e.role,
+               z.name AS zone, a.name AS attraction,
+               m.maintenance_date,
+               v.first_name AS visitor
+        FROM employee e
+        INNER JOIN zone z ON e.zone_id = z.id
+        INNER JOIN attraction a ON e.attraction_id = a.id
+        LEFT JOIN maintenance m ON e.id = m.employee_id
+        LEFT JOIN ticket_attraction ta ON a.id = ta.attraction_id
+        LEFT JOIN ticket t ON ta.ticket_id = t.id
+        LEFT JOIN visitor v ON t.visitor_id = v.id;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 9 -->
+    <h2>9️⃣ Ranking de visitantes</h2>
+    <p>Ordena a los visitantes por cantidad de atracciones visitadas y compras realizadas.</p>
+
+    <div class="code-box">
+        SELECT v.first_name, v.last_name,
+               COUNT(DISTINCT ta.id) AS attractions_visited,
+               COUNT(DISTINCT p.id) AS purchases_made
+        FROM visitor v
+        LEFT JOIN ticket t ON v.id = t.visitor_id
+        LEFT JOIN ticket_attraction ta ON t.id = ta.ticket_id
+        LEFT JOIN purchase p ON v.id = p.visitor_id
+        GROUP BY v.id
+        ORDER BY attractions_visited DESC, purchases_made DESC;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 10 -->
+    <h2>🔟 Reporte total por atracción</h2>
+    <p>Incluye atracción, zona, empleados, visitantes y productos comprados.</p>
+
+    <div class="code-box">
+        SELECT a.name AS attraction, z.name AS zone,
+               e.first_name AS employee,
+               v.first_name AS visitor, p.id AS purchase_id, prd.name AS product
+        FROM attraction a
+        INNER JOIN zone z ON a.zone_id = z.id
+        INNER JOIN employee e ON a.id = e.attraction_id
+        LEFT JOIN ticket_attraction ta ON a.id = ta.attraction_id
+        LEFT JOIN ticket t ON ta.ticket_id = t.id
+        LEFT JOIN visitor v ON t.visitor_id = v.id
+        LEFT JOIN purchase p ON v.id = p.visitor_id
+        LEFT JOIN purchase_detail pd ON p.id = pd.purchase_id
+        LEFT JOIN product prd ON pd.product_id = prd.id;
+    </div>
+
+    <hr>
+
+    <!-- JOIN 11 -->
+    <h2>1️⃣1️⃣ Atracciones visitadas por menores de edad</h2>
+    <p>Muestra los menores de edad y las atracciones que han visitado.</p>
+
+    <div class="code-box">
+        SELECT v.first_name, v.last_name, v.age,
+               a.name AS attraction, ta.access_time
+        FROM visitor v
+        INNER JOIN ticket t ON v.id = t.visitor_id
+        INNER JOIN ticket_attraction ta ON t.id = ta.ticket_id
+        INNER JOIN attraction a ON ta.attraction_id = a.id
+        WHERE v.age < 18;
+    </div>
+
+</main>
+
+</body>
+</html>
